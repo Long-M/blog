@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ml.blog.mapper.MessageMapper">
+  <resultMap id="BaseResultMap" type="com.ml.blog.entity.Message">
+    <id column="message_id" jdbcType="INTEGER" property="messageId" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    message_id, content, email, username, create_time
+  </sql>
+  <select id="getMessage" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from message
+    where message_id = #{messageId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteMessage" parameterType="java.lang.Integer">
+    delete from message
+    where message_id = #{messageId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insertMessage" parameterType="com.ml.blog.entity.Message">
+    insert into message (message_id, content, email, 
+      username, create_time)
+    values (#{messageId,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{username,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateMessage" parameterType="com.ml.blog.entity.Message">
+    update message
+    set content = #{content,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      username = #{username,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where message_id = #{messageId,jdbcType=INTEGER}
+  </update>
+  <select id="listMessages" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from message
+  </select>
+</mapper>

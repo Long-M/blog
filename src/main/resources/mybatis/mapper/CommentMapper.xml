@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ml.blog.mapper.CommentMapper">
+  <resultMap id="BaseResultMap" type="com.ml.blog.entity.Comment">
+    <id column="comment_id" jdbcType="INTEGER" property="commentId" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="avatar" jdbcType="VARCHAR" property="avatar" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="article_id" jdbcType="INTEGER" property="articleId" />
+    <result column="parent_comment_id" jdbcType="INTEGER" property="parentCommentId" />
+    <result column="admin_comment" jdbcType="BIT" property="adminComment" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    comment_id, username, content, email, avatar, create_time, article_id, parent_comment_id, 
+    admin_comment
+  </sql>
+  <select id="getComment" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from comment
+    where comment_id = #{commentId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteComment" parameterType="java.lang.Integer">
+    delete from comment
+    where comment_id = #{commentId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insertComment" parameterType="com.ml.blog.entity.Comment">
+    insert into comment (comment_id, username, content,
+      email, avatar, create_time, 
+      article_id, parent_comment_id, admin_comment
+      )
+    values (#{commentId,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{avatar,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{articleId,jdbcType=INTEGER}, #{parentCommentId,jdbcType=INTEGER}, #{adminComment,jdbcType=BIT}
+      )
+  </insert>
+  <update id="updateComment" parameterType="com.ml.blog.entity.Comment">
+    update comment
+    set username = #{username,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      avatar = #{avatar,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      article_id = #{articleId,jdbcType=INTEGER},
+      parent_comment_id = #{parentCommentId,jdbcType=INTEGER},
+      admin_comment = #{adminComment,jdbcType=BIT}
+    where comment_id = #{commentId,jdbcType=INTEGER}
+  </update>
+  <select id="listCommentsByArticleId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from comment
+    where article_id = #{articleId};
+  </select>
+</mapper>

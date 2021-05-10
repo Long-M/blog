@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ml.blog.mapper.TypeMapper">
+  <resultMap id="BaseResultMap" type="com.ml.blog.entity.Type">
+    <result column="type_id" jdbcType="INTEGER" property="typeId" />
+    <result column="type_name" jdbcType="VARCHAR" property="typeName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    type_id, type_name
+  </sql>
+  <select id="getType" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from type
+    where type_id = #{typeId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteType" parameterType="java.lang.Integer">
+    delete from type
+    where type_id = #{typeId,jdbcType=INTEGER}
+  </delete>
+  <update id="updateType" parameterType="com.ml.blog.entity.Type">
+    update type
+    set name = #{name,jdbcType=VARCHAR}
+    where type_id = #{typeId,jdbcType=INTEGER}
+  </update>
+  <insert id="insertType" parameterType="com.ml.blog.entity.Type">
+    insert into type (type_id, type_name)
+    values (#{typeId,jdbcType=INTEGER}, #{typeName,jdbcType=VARCHAR})
+  </insert>
+  <select id="getTypeByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from type
+    where type_name = #{typeName,jdbcType=VARCHAR}
+  </select>
+  <select id="listTypes" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from type
+  </select>
+</mapper>

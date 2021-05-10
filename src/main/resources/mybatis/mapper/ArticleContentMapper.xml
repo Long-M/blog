@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ml.blog.mapper.ArticleContentMapper">
+  <resultMap id="BaseResultMap" type="com.ml.blog.entity.ArticleContent">
+    <id column="article_content_id" jdbcType="INTEGER" property="articleContentId" />
+    <result column="article_content" jdbcType="LONGVARCHAR" property="articleContent" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    article_content_id, article_content
+  </sql>
+  <select id="getArticleContent" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from article_content
+    where article_content_id = #{articleContentId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteArticleContent" parameterType="java.lang.Integer">
+    delete from article_content
+    where article_content_id = #{articleContentId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insertArticleContent" parameterType="com.ml.blog.entity.ArticleContent">
+    insert into article_content (article_content_id, article_content
+      )
+    values (#{articleContentId,jdbcType=INTEGER}, #{articleContent,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <update id="updateArticleContent" parameterType="com.ml.blog.entity.ArticleContent">
+    update article_content
+    set article_content = #{articleContent,jdbcType=LONGVARCHAR}
+    where article_content_id = #{articleContentId,jdbcType=INTEGER}
+  </update>
+</mapper>

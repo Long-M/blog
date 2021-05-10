@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ml.blog.mapper.ArticleTagMapper">
+  <resultMap id="BaseResultMap" type="com.ml.blog.entity.ArticleTag">
+    <id column="article_tag_id" jdbcType="INTEGER" property="articleTagId" />
+    <result column="article_id" jdbcType="INTEGER" property="articleId" />
+    <result column="tag_id" jdbcType="INTEGER" property="tagId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    article_tag_id, article_id, tag_id
+  </sql>
+  <select id="getArticleTag" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from article_tag
+    where article_tag_id = #{articleTagId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteArticleTag" parameterType="java.lang.Integer">
+    delete from article_tag
+    where article_tag_id = #{articleTagId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insertArticleTag" parameterType="com.ml.blog.entity.ArticleTag">
+    insert into article_tag (article_tag_id, article_id, tag_id
+      )
+    values (#{articleTagId,jdbcType=INTEGER}, #{articleId,jdbcType=INTEGER}, #{tagId,jdbcType=INTEGER}
+      )
+  </insert>
+  <update id="updateArticleTag" parameterType="com.ml.blog.entity.ArticleTag">
+    update article_tag
+    set article_id = #{articleId,jdbcType=INTEGER},
+      tag_id = #{tagId,jdbcType=INTEGER}
+    where article_tag_id = #{articleTagId,jdbcType=INTEGER}
+  </update>
+  <delete id="deleteArticleTagByArticleId" parameterType="java.lang.Integer">
+    delete from article_tag
+    where article_id = #{articleId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteArticleTagByTagId" parameterType="java.lang.Integer">
+    delete from article_tag
+    where article_id = #{tagId,jdbcType=INTEGER}
+  </delete>
+  <select id="listArticleTagByArticleId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from article_tag
+    where article_id = #{articleId,jdbcType=INTEGER}
+  </select>
+  <select id="listArticleTagByTagId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from article_tag
+    where tag_id = #{tagId,jdbcType=INTEGER}
+  </select>
+</mapper>

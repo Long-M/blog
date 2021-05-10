@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ml.blog.mapper.VisitorMapper">
+  <resultMap id="BaseResultMap" type="com.ml.blog.entity.Visitor">
+    <id column="visitor_id" jdbcType="INTEGER" property="visitorId" />
+    <result column="ip_address" jdbcType="VARCHAR" property="ipAddress" />
+    <result column="recent_visit_time" jdbcType="TIMESTAMP" property="recentVisitTime" />
+    <result column="count" jdbcType="INTEGER" property="count" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    visitor_id, ip_address, recent_visit_time, count
+  </sql>
+  <select id="getVisitor" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from visitor
+    where visitor_id = #{visitorId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteVisitor" parameterType="java.lang.Integer">
+    delete from visitor
+    where visitor_id = #{visitorId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insertVisitor" parameterType="com.ml.blog.entity.Visitor">
+    insert into visitor (visitor_id, ip_address, recent_visit_time, 
+      count)
+    values (#{visitorId,jdbcType=INTEGER}, #{ipAddress,jdbcType=VARCHAR}, #{recentVisitTime,jdbcType=TIMESTAMP}, 
+      #{count,jdbcType=INTEGER})
+  </insert>
+  <update id="updateVisitor" parameterType="com.ml.blog.entity.Visitor">
+    update visitor
+    set ip_address = #{ipAddress,jdbcType=VARCHAR},
+      recent_visit_time = #{recentVisitTime,jdbcType=TIMESTAMP},
+      count = #{count,jdbcType=INTEGER}
+    where visitor_id = #{visitorId,jdbcType=INTEGER}
+  </update>
+  <select id="getVisitorByIP" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from visitor
+    where ip_address = #{ip,jdbcType=INTEGER}
+  </select>
+  <select id="listVisitors" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from visitor
+  </select>
+</mapper>

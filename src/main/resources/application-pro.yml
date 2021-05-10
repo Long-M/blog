@@ -1,0 +1,35 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/blog?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    username: root
+    password: maolong
+    type: com.alibaba.druid.pool.DruidDataSource
+
+  redis:
+    host: 47.104.218.84
+    port: 6379
+    database: 6
+
+  mail:
+    host: smtp.qq.com
+    port: 587
+    username: 1518195329@qq.com
+    password: fmxyxpqmncbnfdid
+    default-encoding: UTF-8
+    properties:
+      mail.smtp.socketFactory.class: javax.net.ssl.SSLSocketFactory
+      mail.debug: true
+
+mybatis:
+  mapper-locations: classpath:mybatis/mapper/*.xml
+  type-aliases-package: com.ml.blog.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    use-generated-keys: true
+
+logging:
+  level:
+    root: info
+    com.ml: debug
+  file: log/blog-dev.log
