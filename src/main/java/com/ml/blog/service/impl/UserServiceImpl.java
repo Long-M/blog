@@ -1,7 +1,9 @@
 package com.ml.blog.service.impl;
 
 import com.ml.blog.entity.User;
+import com.ml.blog.enums.ResultCodeEnum;
 import com.ml.blog.exception.DeleteException;
+import com.ml.blog.exception.InsertException;
 import com.ml.blog.exception.SelectException;
 import com.ml.blog.exception.UpdateException;
 import com.ml.blog.mapper.UserMapper;
@@ -38,7 +40,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         int res = userMapper.insertUser(user);
         if (res == -1) {
-            throw new SelectException("");
+            throw new InsertException(ResultCodeEnum.INSERT_FAIL, "用户新增失败");
         }
         return res;
     }
@@ -48,7 +50,7 @@ public class UserServiceImpl implements UserService {
     public int removeUser(Integer userId) {
         int res = userMapper.deleteUser(userId);
         if (res == -1) {
-            throw new DeleteException("");
+            throw new DeleteException(ResultCodeEnum.DELETE_FAIL, "用户删除失败");
         }
         return res;
     }
@@ -59,7 +61,7 @@ public class UserServiceImpl implements UserService {
         user.setRecentLoginTime(new Date());
         int res = userMapper.updateUser(user);
         if (res == -1) {
-            throw new UpdateException("");
+            throw new UpdateException(ResultCodeEnum.UPDATE_FAIL, "用户更新失败");
         }
         return res;
     }
@@ -68,7 +70,7 @@ public class UserServiceImpl implements UserService {
     public User getUser(Integer userId) {
         User user = userMapper.getUser(userId);
         if (user == null) {
-            throw new SelectException("");
+            throw new SelectException(ResultCodeEnum.SELECT_FAIL, "用户查询失败");
         }
         return user;
     }
@@ -77,7 +79,7 @@ public class UserServiceImpl implements UserService {
     public User getUserByAuthor(String author) {
         User user = userMapper.getUserByUsername(author);
         if (user == null) {
-            throw new SelectException("");
+            throw new SelectException(ResultCodeEnum.SELECT_FAIL, "用户查询失败");
         }
         return user;
     }
@@ -86,7 +88,7 @@ public class UserServiceImpl implements UserService {
     public User getUserByUsername(String username) {
         User user = userMapper.getUserByUsername(username);
         if (user == null) {
-            throw new SelectException("");
+            throw new SelectException(ResultCodeEnum.SELECT_FAIL, "用户查询失败");
         }
         return user;
     }
@@ -95,7 +97,7 @@ public class UserServiceImpl implements UserService {
     public List<User> listUsers() {
         List<User> users = userMapper.listUsers();
         if (users == null) {
-            throw new SelectException("");
+            throw new SelectException(ResultCodeEnum.SELECT_FAIL, "用户查询失败");
         }
         return users;
     }

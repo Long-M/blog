@@ -1,5 +1,6 @@
 package com.ml.blog.service.impl;
 
+import com.ml.blog.enums.ResultCodeEnum;
 import com.ml.blog.exception.TokenExpiredException;
 import com.ml.blog.exception.TokenGeneratedException;
 import com.ml.blog.exception.UsernamePasswordAuthenticationException;
@@ -41,7 +42,7 @@ public class JwtAuthServiceImpl implements JwtAuthService {
     public String login(String username, String password) {
         if (StringUtils.isEmpty(username)
                 || StringUtils.isEmpty(password)) {
-            throw new UsernamePasswordEmptyException("用户名或者密码不能为空");
+            throw new UsernamePasswordEmptyException(ResultCodeEnum.USER_NOT_NULL);
         }
 
         try {
@@ -50,13 +51,13 @@ public class JwtAuthServiceImpl implements JwtAuthService {
             Authentication authentication = authenticationManager.authenticate(upToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         } catch (AuthenticationException e) {
-            throw new UsernamePasswordAuthenticationException("用户名或者密码不正确");
+            throw new UsernamePasswordAuthenticationException(ResultCodeEnum.USER_ERROR);
         }
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         String token = jwtTokenUtils.generateToken(userDetails);
         if (token == null || token.length() == 0) {
-            throw new TokenGeneratedException("");
+            throw new TokenGeneratedException(ResultCodeEnum.TOKEN_GENERATED_FAIL);
         }
         return token;
     }
@@ -64,7 +65,7 @@ public class JwtAuthServiceImpl implements JwtAuthService {
     @Override
     public String refreshToken(String oldToken) {
         if (jwtTokenUtils.isTokenExpired(oldToken)) {
-            throw new TokenExpiredException("Token过期");
+            throw new TokenExpiredException(ResultCodeEnum.TOKEN_EXPIRE);
         }
         return jwtTokenUtils.refreshToken(oldToken);
     }

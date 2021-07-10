@@ -1,5 +1,6 @@
 package com.ml.blog.handler;
 
+import com.ml.blog.exception.DeleteException;
 import com.ml.blog.vo.ResultVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,15 @@ public class GlobalExceptionHandler {
         logger.error(exception.getMessage(), exception);
         String message = exception.getMessage();
         return ResultVO.error(400, message);
+    }
+
+
+    @ExceptionHandler(DeleteException.class)
+    public ResultVO handleDeleteException(DeleteException exception) {
+        logger.error(exception.getMessage(), exception);
+        Integer code = exception.getCode();
+        String message = exception.getMessage();
+        return ResultVO.error(code, message);
     }
 
 }

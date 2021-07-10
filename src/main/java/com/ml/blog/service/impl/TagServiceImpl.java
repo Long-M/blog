@@ -3,6 +3,7 @@ package com.ml.blog.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.ml.blog.entity.Tag;
+import com.ml.blog.enums.ResultCodeEnum;
 import com.ml.blog.exception.*;
 import com.ml.blog.mapper.ArticleTagMapper;
 import com.ml.blog.mapper.TagMapper;
@@ -31,7 +32,7 @@ public class TagServiceImpl implements TagService {
     public int saveTag(Tag tag) {
         int res = tagMapper.insertTag(tag);
         if (res == -1) {
-            throw new InsertException("标签插入失败");
+            throw new InsertException(ResultCodeEnum.INSERT_FAIL, "标签插入失败");
         }
         return res;
     }
@@ -42,7 +43,7 @@ public class TagServiceImpl implements TagService {
         int res = tagMapper.deleteTag(tagId);
         res |= articleTagMapper.deleteArticleTagByTagId(tagId);
         if (res == -1) {
-            throw new DeleteException();
+            throw new DeleteException(ResultCodeEnum.DELETE_FAIL, "标签删除失败");
         }
         return res;
     }
@@ -52,12 +53,12 @@ public class TagServiceImpl implements TagService {
     public int updateTag(Tag tag) {
         Tag t = tagMapper.getTag(tag.getTagId());
         if (t == null) {
-            throw new NotFoundException("不存在该标签");
+            throw new NotFoundException(ResultCodeEnum.NOT_FOUNT, "该标签不存在");
         }
         BeanUtils.copyProperties(tag, t);
         int res = tagMapper.updateTag(t);
         if (res == -1) {
-            throw new UpdateException("标签更新失败");
+            throw new UpdateException(ResultCodeEnum.UPDATE_FAIL, "标签更新失败");
         }
         return res;
     }
@@ -67,7 +68,7 @@ public class TagServiceImpl implements TagService {
     public Tag getTag(Integer tagId) {
         Tag tag = tagMapper.getTag(tagId);
         if (tag == null) {
-            throw new SelectException("标签查询失败");
+            throw new SelectException(ResultCodeEnum.SELECT_FAIL, "标签查询失败");
         }
         return tag;
     }
@@ -76,7 +77,7 @@ public class TagServiceImpl implements TagService {
     public Tag getTagByName(String name) {
         Tag tag = tagMapper.getTagByName(name);
         if (tag == null) {
-            throw new SelectException("标签查询失败");
+            throw new SelectException(ResultCodeEnum.SELECT_FAIL, "标签查询失败");
         }
         return tag;
     }
@@ -85,7 +86,7 @@ public class TagServiceImpl implements TagService {
     public List<Tag> listTags() {
         List<Tag> tags = tagMapper.listTags();
         if (tags == null) {
-            throw new SelectException("标签查询失败");
+            throw new SelectException(ResultCodeEnum.SELECT_FAIL, "标签查询失败");
         }
         return tags;
     }
@@ -96,7 +97,7 @@ public class TagServiceImpl implements TagService {
         PageHelper.startPage(pageNum, pageSize, "tag_id desc");
         List<Tag> tags = tagMapper.listTags();
         if (tags == null) {
-            throw new SelectException("标签查询失败");
+            throw new SelectException(ResultCodeEnum.SELECT_FAIL, "标签查询失败");
         }
         return new PageInfo<>(tags);
     }
@@ -106,7 +107,7 @@ public class TagServiceImpl implements TagService {
         //PageHelper.startPage(1, size, "articles.size() desc");
         List<Tag> tags = tagMapper.listTags();
         if (tags == null) {
-            throw new SelectException("标签查询失败");
+            throw new SelectException(ResultCodeEnum.SELECT_FAIL, "标签查询失败");
         }
         return new PageInfo<>(tags);
     }

@@ -3,6 +3,7 @@ package com.ml.blog.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.ml.blog.enums.RedisKeyEnum;
+import com.ml.blog.enums.ResultCodeEnum;
 import com.ml.blog.exception.*;
 import com.ml.blog.form.ArticleInsertForm;
 import com.ml.blog.entity.Article;
@@ -75,7 +76,7 @@ public class ArticleServiceImpl implements ArticleService {
             }
         }
         if (res == -1) {
-            throw new InsertException("");
+            throw new InsertException(ResultCodeEnum.INSERT_FAIL, "博客新增失败");
         }
         return res;
     }
@@ -92,7 +93,7 @@ public class ArticleServiceImpl implements ArticleService {
         res = res | articleMapper.deleteArticle(articleId);
 
         if (res == -1) {
-            throw new DeleteException("");
+            throw new DeleteException(ResultCodeEnum.DELETE_FAIL, "博客删除失败");
         }
         return res;
     }
@@ -107,7 +108,7 @@ public class ArticleServiceImpl implements ArticleService {
         }
         Article article = articleMapper.getArticle(articleId);
         if (article == null) {
-            throw new NotFoundException("该博客不存在");
+            throw new NotFoundException(ResultCodeEnum.NOT_FOUNT, "该博客不存在");
         }
 
         // 修改后的标签id集合
@@ -134,7 +135,7 @@ public class ArticleServiceImpl implements ArticleService {
         article.setUpdateTime(new Date());
         int res = articleMapper.updateArticle(article);
         if (res == -1) {
-            throw new UpdateException("");
+            throw new UpdateException(ResultCodeEnum.UPDATE_FAIL, "博客更新失败");
         }
         return res;
     }
@@ -155,7 +156,7 @@ public class ArticleServiceImpl implements ArticleService {
     public ArticleVO getAndConvert(Integer articleId) {
         Article article = articleMapper.getArticle(articleId);
         if (article == null) {
-            throw new NotFoundException("该博客不存在");
+            throw new NotFoundException(ResultCodeEnum.NOT_FOUNT, "该博客不存在");
         }
         ArticleContent articleContent = articleContentMapper.getArticleContent(article.getArticleContentId());
         ArticleVO articleVO = new ArticleVO();
@@ -199,7 +200,7 @@ public class ArticleServiceImpl implements ArticleService {
             articles.add(article);
         });
         if (articles == null) {
-            throw new SelectException("");
+            throw new SelectException(ResultCodeEnum.SELECT_FAIL, "博客查询失败");
         }
         return new PageInfo<>(articles);
     }
@@ -209,7 +210,7 @@ public class ArticleServiceImpl implements ArticleService {
         PageHelper.startPage(1, size, "update_time desc");
         List<Article> articles = articleMapper.listRecommendArticlesTop();
         if (articles == null) {
-            throw new SelectException("");
+            throw new SelectException(ResultCodeEnum.SELECT_FAIL, "博客查询失败");
         }
         return new PageInfo<>(articles);
     }

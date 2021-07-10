@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.ml.blog.entity.Article;
 import com.ml.blog.entity.Type;
+import com.ml.blog.enums.ResultCodeEnum;
 import com.ml.blog.exception.*;
 import com.ml.blog.mapper.ArticleMapper;
 import com.ml.blog.mapper.TypeMapper;
@@ -32,7 +33,7 @@ public class TypeServiceImpl implements TypeService {
     public int saveType(Type type) {
         int res  = typeMapper.insertType(type);
         if (res == -1) {
-            throw new InsertException("");
+            throw new InsertException(ResultCodeEnum.INSERT_FAIL, "类型插入失败");
         }
         return res;
     }
@@ -47,7 +48,7 @@ public class TypeServiceImpl implements TypeService {
             articleMapper.updateArticle(article);
         });
         if (res == -1) {
-            throw new DeleteException("");
+            throw new DeleteException(ResultCodeEnum.DELETE_FAIL, "类型删除失败");
         }
         return res;
     }
@@ -57,12 +58,12 @@ public class TypeServiceImpl implements TypeService {
     public int updateType(Type type) {
         Type t = typeMapper.getType(type.getTypeId());
         if (t == null) {
-            throw new NotFoundException("不存在该类型");
+            throw new NotFoundException(ResultCodeEnum.NOT_FOUNT, "该类型不存在");
         }
         BeanUtils.copyProperties(type, t);
         int res = typeMapper.updateType(t);
         if (res == -1) {
-            throw new UpdateException("");
+            throw new UpdateException(ResultCodeEnum.UPDATE_FAIL, "类型更新失败");
         }
         return res;
     }
@@ -72,7 +73,7 @@ public class TypeServiceImpl implements TypeService {
     public Type getType(Integer id) {
         Type type = typeMapper.getType(id);
         if (type == null) {
-            throw new SelectException("");
+            throw new SelectException(ResultCodeEnum.SELECT_FAIL, "类型查询失败");
         }
         return type;
     }
@@ -81,7 +82,7 @@ public class TypeServiceImpl implements TypeService {
     public Type getTypeByName(String name) {
         Type type = typeMapper.getTypeByName(name);
         if (type == null) {
-            throw new SelectException("");
+            throw new SelectException(ResultCodeEnum.SELECT_FAIL, "类型查询失败");
         }
         return type;
     }
@@ -90,7 +91,7 @@ public class TypeServiceImpl implements TypeService {
     public List<Type> listTypes() {
         List<Type> types = typeMapper.listTypes();
         if (types == null) {
-            throw new SelectException("");
+            throw new SelectException(ResultCodeEnum.SELECT_FAIL, "类型查询失败");
         }
         return types;
     }
@@ -100,7 +101,7 @@ public class TypeServiceImpl implements TypeService {
         PageHelper.startPage(pageNum, pageSize, "type_id desc");
         List<Type> types = typeMapper.listTypes();
         if (types == null) {
-            throw new SelectException("");
+            throw new SelectException(ResultCodeEnum.SELECT_FAIL, "类型查询失败");
         }
         return new PageInfo<>(types);
     }
@@ -110,7 +111,7 @@ public class TypeServiceImpl implements TypeService {
         //PageHelper.startPage(1, size, "articles.size() desc");
         List<Type> types = typeMapper.listTypes();
         if (types == null) {
-            throw new SelectException("");
+            throw new SelectException(ResultCodeEnum.SELECT_FAIL, "类型查询失败");
         }
         return new PageInfo<>(types);
     }

@@ -1,6 +1,7 @@
 package com.ml.blog.service.impl;
 
 import com.ml.blog.entity.FriendLink;
+import com.ml.blog.enums.ResultCodeEnum;
 import com.ml.blog.exception.DeleteException;
 import com.ml.blog.exception.InsertException;
 import com.ml.blog.exception.SelectException;
@@ -28,7 +29,7 @@ public class FriendLinkServiceImpl implements FriendLinkService {
     public int saveFriendLink(FriendLink friendLink) {
         int res = friendLinkMapper.insertFriendLink(friendLink);
         if (res == -1) {
-            throw new InsertException("");
+            throw new InsertException(ResultCodeEnum.INSERT_FAIL, "友链新增失败");
         }
         return res;
     }
@@ -38,7 +39,7 @@ public class FriendLinkServiceImpl implements FriendLinkService {
     public int removeFriendLink(Integer id) {
         int res = friendLinkMapper.deleteFriendLink(id);
         if (res == -1) {
-            throw new DeleteException("");
+            throw new DeleteException(ResultCodeEnum.DELETE_FAIL, "友链删除失败");
         }
         return res;
     }
@@ -48,7 +49,7 @@ public class FriendLinkServiceImpl implements FriendLinkService {
     public int updateFriendLink(FriendLink friendLink) {
         int res = friendLinkMapper.updateFriendLink(friendLink);
         if (res == -1) {
-            throw new UpdateException("");
+            throw new UpdateException(ResultCodeEnum.UPDATE_FAIL, "友链更新失败");
         }
         return res;
     }
@@ -57,7 +58,7 @@ public class FriendLinkServiceImpl implements FriendLinkService {
     public FriendLink getFriendLink(Integer id) {
         FriendLink friendLink = friendLinkMapper.getFriendLink(id);
         if (friendLink == null) {
-            throw new SelectException("");
+            throw new SelectException(ResultCodeEnum.SELECT_FAIL, "友链查询失败");
         }
         return friendLink;
     }
@@ -66,7 +67,7 @@ public class FriendLinkServiceImpl implements FriendLinkService {
     public FriendLink getFriendLinkByBlogger(String blogger) {
         FriendLink friendLink = friendLinkMapper.getFriendLinkByBlogger(blogger);
         if (friendLink == null) {
-            throw new SelectException("");
+            throw new SelectException(ResultCodeEnum.SELECT_FAIL, "友链查询失败");
         }
         return friendLink;
     }
@@ -75,7 +76,7 @@ public class FriendLinkServiceImpl implements FriendLinkService {
     public List<FriendLink> listFriendLinks() {
         List<FriendLink> friendLinks = friendLinkMapper.listFriendLinks();
         if (friendLinks == null) {
-            throw new SelectException("");
+            throw new SelectException(ResultCodeEnum.SELECT_FAIL, "友链查询失败");
         }
         return friendLinks;
     }

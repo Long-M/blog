@@ -1,5 +1,6 @@
 package com.ml.blog.service.impl;
 
+import com.ml.blog.enums.ResultCodeEnum;
 import com.ml.blog.exception.InsertException;
 import com.ml.blog.exception.SelectException;
 import com.ml.blog.mapper.CommentMapper;
@@ -36,7 +37,7 @@ public class CommentServiceImpl implements CommentService {
         comment.setCreateTime(new Date());
         int res = commentMapper.insertComment(comment);
         if (res == -1) {
-            throw new InsertException("评论添加失败");
+            throw new InsertException(ResultCodeEnum.INSERT_FAIL, "评论新增失败");
         }
         return res;
     }
@@ -47,7 +48,7 @@ public class CommentServiceImpl implements CommentService {
         comments = commentMapper.listCommentsByArticleId(articleId);
         comments = buildTree();
         if (comments == null) {
-            throw new SelectException("评论查询失败");
+            throw new SelectException(ResultCodeEnum.SELECT_FAIL, "评论查询失败");
         }
         return comments;
     }

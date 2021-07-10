@@ -10,7 +10,6 @@ import com.ml.blog.exception.SelectException;
 import com.ml.blog.exception.UpdateException;
 import com.ml.blog.mapper.VisitorMapper;
 import com.ml.blog.service.VisitorService;
-import com.ml.blog.vo.ResultVO;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -30,7 +29,7 @@ public class VisitorServiceImpl implements VisitorService {
     public int saveVisitor(Visitor visitor) {
         int res = visitorMapper.insertVisitor(visitor);
         if (res == -1) {
-            throw new InsertException("");
+            throw new InsertException(ResultCodeEnum.INSERT_FAIL, "访客插入失败");
         }
         return res;
     }
@@ -39,7 +38,7 @@ public class VisitorServiceImpl implements VisitorService {
     public int removeVisitor(Integer visitorId) {
         int res = visitorMapper.deleteVisitor(visitorId);
         if (res == -1) {
-            throw new DeleteException("");
+            throw new DeleteException(ResultCodeEnum.DELETE_FAIL, "访客删除失败");
         }
         return res;
     }
@@ -48,7 +47,7 @@ public class VisitorServiceImpl implements VisitorService {
     public int updateVisitor(Visitor visitor) {
         int res = visitorMapper.updateVisitor(visitor);
         if (res == -1) {
-            throw new UpdateException("");
+            throw new UpdateException(ResultCodeEnum.UPDATE_FAIL, "访客更新失败");
         }
         return res;
     }
@@ -57,7 +56,7 @@ public class VisitorServiceImpl implements VisitorService {
     public Visitor getVisitor(Integer visitorId) {
         Visitor visitor = visitorMapper.getVisitor(visitorId);
         if (visitor == null) {
-            throw new SelectException("");
+            throw new SelectException(ResultCodeEnum.SELECT_FAIL, "访客查询失败");
         }
         return visitor;
     }
@@ -76,7 +75,7 @@ public class VisitorServiceImpl implements VisitorService {
 //            visitorService.updateVisitor(visitor);
 //        }
         if (visitor == null) {
-            throw new SelectException("");
+            throw new SelectException(ResultCodeEnum.SELECT_FAIL, "访客查询失败");
         }
         return visitor;
     }
@@ -86,7 +85,7 @@ public class VisitorServiceImpl implements VisitorService {
         PageHelper.startPage(pageNum, pageSize, "time desc");
         List<Visitor> visitors = visitorMapper.listVisitors();
         if (visitors == null) {
-            throw new SelectException("");
+            throw new SelectException(ResultCodeEnum.SELECT_FAIL, "访客查询失败");
         }
         return new PageInfo<>(visitors);
     }
